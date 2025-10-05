@@ -19,11 +19,8 @@ export default function Home() {
             </h1>
           </div>
           <nav className="hidden sm:flex gap-6">
-            <Link href="#overview" className="hover:text-blue-400 transition">
+            <Link href="https://spaceappschallenge.org/" className="hover:text-blue-400 transition">
               Overview
-            </Link>
-            <Link href="#features" className="hover:text-blue-400 transition">
-              Features
             </Link>
             <Link href="/dashboard" className="hover:text-blue-400 transition">
               Dashboard
