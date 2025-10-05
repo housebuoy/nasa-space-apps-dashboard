@@ -20,7 +20,6 @@ const SUGGESTIONS: string[] = [
 ];
 
 const ENDPOINT = "/api/ai/insights";
-
 // Marquee suggestions (3 chips)
 function MarqueeSuggestions({
   suggestions,
@@ -31,18 +30,16 @@ function MarqueeSuggestions({
   onSuggestion: (s: string) => void;
   duration?: string;
 }) {
-  // Only take three
   const items = React.useMemo(() => suggestions.slice(0, 3), [suggestions]);
-  // Duplicate for seamless loop
   const looped = React.useMemo(() => [...items, ...items], [items]);
 
   return (
     <div className="mx-auto mt-5 max-w-4xl px-6">
       <div
-        className="
-          group overflow-hidden
-          [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]
-        "
+        className={cn(
+          "group overflow-hidden",
+          "[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+        )}
       >
         <div
           className={cn(
@@ -50,7 +47,7 @@ function MarqueeSuggestions({
             "animate-marquee",
             "group-hover:[animation-play-state:paused]"
           )}
-          style={{ ["--marquee-duration" as string]: duration } as React.CSSProperties}
+          style={{ "--marquee-duration": duration } as React.CSSProperties}
         >
           {looped.map((s, idx) => (
             <Button
@@ -65,71 +62,24 @@ function MarqueeSuggestions({
           ))}
         </div>
       </div>
-
-      {/* Keyframes + prefers-reduced-motion (global) */}
-      <style jsx global>{`
-        @keyframes marquee {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-marquee {
-          animation: marquee var(--marquee-duration, 18s) linear infinite;
-          will-change: transform;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .animate-marquee {
-            animation: none;
-          }
-        }
-      `}</style>
     </div>
   );
 }
 
 // Hero (greeting + orb + marquee)
-function Hero({
-  onSuggestion,
-  name = "Researcher",
-}: {
-  onSuggestion: (s: string) => void;
-  name?: string;
-}) {
+function Hero({ onSuggestion, name = "Researcher" }: { onSuggestion: (s: string) => void; name?: string }) {
   const hour = new Date().getHours();
-  const timeGreeting =
-    hour < 5
-      ? "Good night"
-      : hour < 12
-      ? "Good morning"
-      : hour < 18
-      ? "Good afternoon"
-      : "Good evening";
+  const timeGreeting = hour < 5 ? "Good night" : hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   return (
     <section className="relative -mx-6 -mt-6 isolate overflow-hidden pb-6 sm:pb-8">
-      {/* Ambient theme-aware gradient */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(80%_60%_at_50%_-20%,hsl(var(--primary)/0.25)_0%,transparent_60%),linear-gradient(to_bottom,transparent_0%,hsl(var(--primary)/0.08)_45%,transparent_100%)]" />
-
-      {/* Glow orb */}
       <div className="flex w-full justify-center pt-8 sm:pt-10">
-        <div
-          className="
-            size-16 sm:size-20 rounded-full
-            bg-[radial-gradient(50%_50%_at_50%_50%,hsl(var(--primary))_0%,hsl(var(--primary)/.65)_45%,transparent_70%)]
-            shadow-[0_30px_80px_-20px_hsl(var(--primary)/.7)]
-            ring-1 ring-primary/30
-          "
-        />
+        <div className="size-16 sm:size-20 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsl(var(--primary))_0%,hsl(var(--primary)/.65)_45%,transparent_70%)] shadow-[0_30px_80px_-20px_hsl(var(--primary)/.7)] ring-1 ring-primary/30" />
       </div>
-
-      {/* Headline */}
       <div className="mx-auto mt-5 max-w-3xl px-6 text-center">
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
-          {timeGreeting}, {name}.
-          <br className="hidden sm:block" />
+          {timeGreeting}, {name}.<br className="hidden sm:block" />
           <span className="block">Can I help you with anything?</span>
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
@@ -251,7 +201,7 @@ export default function AIInsightsChat() {
 
   return (
     <div className="relative">
-      {!hasMessages && <Hero onSuggestion={(s) => void sendMessage(s)} name="Milovan" />}
+      {!hasMessages && <Hero onSuggestion={(s) => void sendMessage(s)} name="Researcher" />}
 
       {/* Messages list (no background container) */}
       <div className="mx-auto w-full max-w-5xl px-4 sm:px-6">
